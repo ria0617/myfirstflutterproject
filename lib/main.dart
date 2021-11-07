@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myfirstflutterproject/main.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,12 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false, //디버그 빨간 띠 삭제
+        debugShowCheckedModeBanner: false,
         title: 'Appbar',
         theme: ThemeData(
           primarySwatch: Colors.red
-          //원하는 색상값을 넣고 싶을 땐 rgb 컬러값을 해시값으로 치환해서 사용
-          //primaryColor: Color(0xFF174378),
         ),
       home: MyPage(),
     );
@@ -33,27 +30,37 @@ class MyPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF174378),
-        title: Text('Appbar icon menu'), //앱바 타이틀 txt
-        centerTitle: true, //txt 가운데 정렬 여부
-        elevation: 0.0, //앱바 그림자 깊이
+        title: Text('위젯없이 스낵바 만들기'),
+        centerTitle: true,
+        elevation: 0.0,
       ),
-      body: Builder(builder: (BuildContext ctx) {
-        return Center(
-          child: FlatButton(
-            child: Text(
-              'Show me',
-              style: TextStyle(color: Colors.white),
-            ),
-            color: Colors.red,
-            onPressed: () {
-              Scaffold.of(ctx).showSnackBar(SnackBar(
-                content: Text('Hello'),
-              ));
-            },
-          ),
-        );
-      },)
+      body: MySnacBar(),
     );
   }
 }
 
+class MySnacBar extends StatelessWidget {
+  const MySnacBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        child: Text('show me'),
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Hello', //스낵바 표시 텍스트
+                textAlign: TextAlign.center, //스낵바 글자 정렬
+                style: TextStyle(color: Colors.white), //스낵바 글자 색상
+              ),
+              backgroundColor: Colors.teal, //스낵바 배경색상
+              duration: Duration(milliseconds: 1000), //스낵바 유지시간
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
