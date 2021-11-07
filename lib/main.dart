@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:myfirstflutterproject/ScreanA.dart';
+import 'package:myfirstflutterproject/ScreanB.dart';
+import 'ScreanC.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,75 +19,64 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.red
         ),
-      home: MyPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => ScreanA(),
+        '/b': (context) => ScreanB(),
+        '/c': (context) => ScreanC(),
+      },
     );
   }
 }
 
 
-class MyPage extends StatelessWidget {
-  const MyPage({Key? key}) : super(key: key);
+class FirstPage extends StatelessWidget {
+  const FirstPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context2) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF174378),
-        title: Text('위젯없이 스낵바 만들기'),
+        title: Text('첫번째 페이지'),
         centerTitle: true,
         elevation: 0.0,
       ),
       body: Center(
-        //child: MySnacBar(),
-        child: TextButton(
-          onPressed: () {
-            flutterToast();
-          },
-          child: Text(
-            'Toast',
-            style: TextStyle(
-              color: Colors.blue,
-            ),
-          ),
+        child: ElevatedButton(
+          child: Text('다음페이지'),
+            onPressed: (){
+              Navigator.push(context2,
+                  MaterialPageRoute(
+                  //필요 없는 매개변수는 _ 치환가능
+                  builder: (_) => SecondPage()));
+            }),
         ),
-      ),
     );
   }
 }
 
-void flutterToast(){
-  Fluttertoast.showToast(msg: '플러터',
-  gravity: ToastGravity.BOTTOM,
-    backgroundColor: Colors.redAccent,
-    fontSize: 20.0,
-    textColor: Colors.white,
-    toastLength: Toast.LENGTH_SHORT
-  );
-}
-
-//스낵바 함수
-class MySnacBar extends StatelessWidget {
-  const MySnacBar({Key? key}) : super(key: key);
+class SecondPage extends StatelessWidget {
+  const SecondPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        child: Text('show me'),
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Hello', //스낵바 표시 텍스트
-                textAlign: TextAlign.center, //스낵바 글자 정렬
-                style: TextStyle(color: Colors.white), //스낵바 글자 색상
-              ),
-              backgroundColor: Colors.teal, //스낵바 배경색상
-              duration: Duration(milliseconds: 1000), //스낵바 유지시간
-            ),
-          );
-        },
+  Widget build(BuildContext ctx) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF174378),
+        title: Text('두번째 페이지'),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: Text('이전페이지'),
+          onPressed: (){
+            Navigator.pop(ctx);
+          }),
       ),
     );
   }
 }
+
+
