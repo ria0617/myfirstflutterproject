@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() => runApp(MyApp());
 
@@ -34,11 +35,35 @@ class MyPage extends StatelessWidget {
         centerTitle: true,
         elevation: 0.0,
       ),
-      body: MySnacBar(),
+      body: Center(
+        //child: MySnacBar(),
+        child: TextButton(
+          onPressed: () {
+            flutterToast();
+          },
+          child: Text(
+            'Toast',
+            style: TextStyle(
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
 
+void flutterToast(){
+  Fluttertoast.showToast(msg: '플러터',
+  gravity: ToastGravity.BOTTOM,
+    backgroundColor: Colors.redAccent,
+    fontSize: 20.0,
+    textColor: Colors.white,
+    toastLength: Toast.LENGTH_SHORT
+  );
+}
+
+//스낵바 함수
 class MySnacBar extends StatelessWidget {
   const MySnacBar({Key? key}) : super(key: key);
 
