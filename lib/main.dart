@@ -1,10 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myfirstflutterproject/ScreanA.dart';
-import 'package:myfirstflutterproject/ScreanB.dart';
-import 'ScreanC.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,68 +9,124 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Appbar',
         theme: ThemeData(
-          primarySwatch: Colors.red
+          primarySwatch: Colors.blue
         ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => ScreanA(),
-        '/b': (context) => ScreanB(),
-        '/c': (context) => ScreanC(),
-      },
+      home: MyPage(),
     );
   }
 }
 
-
-class FirstPage extends StatelessWidget {
-  const FirstPage({Key? key}) : super(key: key);
+class MyPage extends StatelessWidget {
+  const MyPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context2) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF174378),
-        title: Text('첫번째 페이지'),
-        centerTitle: true,
-        elevation: 0.0,
+        title: Text('Scaffold Messenger'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          child: Text('다음페이지'),
-            onPressed: (){
-              Navigator.push(context2,
-                  MaterialPageRoute(
-                  //필요 없는 매개변수는 _ 치환가능
-                  builder: (_) => SecondPage()));
-            }),
-        ),
+      body: HomeBody(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.thumb_up),
+        onPressed: (){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Like a new Snacbar'),
+              duration: Duration(seconds: 5),
+              action: SnackBarAction(
+                label: 'Undo',
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ThirdPage()),
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class HomeBody extends StatelessWidget {
+  const HomeBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        child: Text('go to the second page'),
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage()),
+          );
+        },
+      ),
     );
   }
 }
 
 class SecondPage extends StatelessWidget {
-  const SecondPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext ctx) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF174378),
-        title: Text('두번째 페이지'),
-        centerTitle: true,
-        elevation: 0.0,
+        title: Text('SecondPage'),
       ),
       body: Center(
-        child: ElevatedButton(
-          child: Text('이전페이지'),
-          onPressed: (){
-            Navigator.pop(ctx);
-          }),
+        child: Text(
+          '"좋아요가 추가 되었습니다"',
+          style: TextStyle(
+            fontSize: 20.0,
+            color: Colors.redAccent
+          ),
+        ),
       ),
     );
   }
 }
 
+
+class ThirdPage extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaffoldMessenger(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('ThirdPage'),
+        ),
+        body: Builder(
+          builder: (context) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '"좋아요가 취소 하시겠습니까?"',
+                    style: TextStyle(fontSize: 20.0, color: Colors.redAccent),
+                  ),
+                  ElevatedButton(
+                    onPressed: (){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text('좋아요가 취소 되었습니다.'),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
+                    },
+                    child: Text('취소하기'),
+                  )
+                ],
+              ),
+            );
+          }
+        ),
+      ),
+    );
+  }
+}
 
